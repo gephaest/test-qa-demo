@@ -13,8 +13,8 @@ import allure
 @allure.label("owner", "Anna Malinovskaia")
 @allure.feature("Регистрационная форма студента")
 @allure.story("Пользователь может зарегестрироваться")
-def test_registration_user():
-    registration_page = RegistrationPage()
+def test_registration_user(setup_browser):
+    registration_page = RegistrationPage(browser=setup_browser)
 
     anna = User(
         first_name='Anna',

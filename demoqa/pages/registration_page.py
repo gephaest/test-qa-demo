@@ -1,28 +1,30 @@
-from selene import browser, have, be
+from selene import have, be
 from demoqa.data.users import User
 from demoqa.pages import resources
 
 
 class RegistrationPage:
 
-    def __init__(self):
-        self.registered_user_data = browser.element('.table').all('td')
-        self.first_name = browser.element('#firstName')
-        self.last_name = browser.element('#lastName')
-        self.email = browser.element('#userEmail')
-        self.gender = browser.all('#genterWrapper label')
-        self.mobile = browser.element('#userNumber')
-        self.subjects = browser.element('#subjectsInput')
-        self.hobbies = browser.all('#hobbiesWrapper label')
-        self.picture = browser.element('#uploadPicture')
-        self.address = browser.element('#currentAddress')
-        self.submit = browser.element('#submit')
+    def __init__(self, browser):
+        self.b = browser
+
+        self.registered_user_data = self.b.element('.table').all('td')
+        self.first_name = self.b.element('#firstName')
+        self.last_name = self.b.element('#lastName')
+        self.email = self.b.element('#userEmail')
+        self.gender = self.b.all('#genterWrapper label')
+        self.mobile = self.b.element('#userNumber')
+        self.subjects = self.b.element('#subjectsInput')
+        self.hobbies = self.b.all('#hobbiesWrapper label')
+        self.picture = self.b.element('#uploadPicture')
+        self.address = self.b.element('#currentAddress')
+        self.submit = self.b.element('#submit')
 
     def open(self):
-        browser.open('https://demoqa.com/automation-practice-form/')
-        browser.driver.execute_script("$('footer').remove()")
-        browser.driver.execute_script("$('#fixedban').remove()")
-
+        self.b
+        self.b.open('https://demoqa.com/automation-practice-form/')
+        self.b.driver.execute_script("$('footer').remove()")
+        self.b.driver.execute_script("$('#fixedban').remove()")
 
     def register(self, anna: User):
         self.first_name.type(anna.first_name)
@@ -44,26 +46,26 @@ class RegistrationPage:
         year = date.year
         month = date.month - 1
         day = date.strftime('%d')
-        browser.element('#dateOfBirthInput').click()
-        browser.element('.react-datepicker__year-select').click()
-        browser.element(f'.react-datepicker__year-select option[value="{year}"]').click()
-        browser.element('.react-datepicker__month-select').click()
-        browser.element(f'.react-datepicker__month-select option[value="{month}"]').click()
-        browser.element(f'.react-datepicker__day--0{day}').click()
+        self.b.element('#dateOfBirthInput').click()
+        self.b.element('.react-datepicker__year-select').click()
+        self.b.element(f'.react-datepicker__year-select option[value="{year}"]').click()
+        self.b.element('.react-datepicker__month-select').click()
+        self.b.element(f'.react-datepicker__month-select option[value="{month}"]').click()
+        self.b.element(f'.react-datepicker__day--0{day}').click()
         return self
 
     def fill_state(self, value):
-        browser.element('#state').click()
-        browser.all("#state div").element_by(have.exact_text(value)).click()
+        self.b.element('#state').click()
+        self.b.all("#state div").element_by(have.exact_text(value)).click()
         return self
 
     def fill_city(self, value):
-        browser.element('#city').click()
-        browser.all("#city div").element_by(have.exact_text(value)).click()
+        self.b.element('#city').click()
+        self.b.all("#city div").element_by(have.exact_text(value)).click()
         return self
 
     def should_have_registred(self, anna: User):
-        browser.element('.table').all('td').even.should(have.exact_texts(
+        self.b.element('.table').all('td').even.should(have.exact_texts(
             f'{anna.first_name} {anna.last_name}',
             f'{anna.email}',
             f'{anna.gender}',
@@ -78,5 +80,5 @@ class RegistrationPage:
             f'{anna.state} {anna.city}'
         ))
 
-        browser.element('#closeLargeModal').click()
-        browser.element('#firstName').should(be.blank)
+        self.b.element('#closeLargeModal').click()
+        self.b.element('#firstName').should(be.blank)
